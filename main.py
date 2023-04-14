@@ -1,22 +1,15 @@
-from flask import Flask, render_template, redirect, request, Blueprint, jsonify, make_response, abort
+from flask import Flask, render_template, redirect, Blueprint
 import datetime
-import os
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+
+from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, BooleanField, SubmitField, EmailField, StringField, IntegerField
-# from wtforms import SelectMultipleField, DateTimeField, SelectField
-from wtforms.validators import DataRequired
-from data import db_session, users
-# from data.db_session import SqlAlchemyBase
-from data.users import User
-# from data.jobs import Jobs
-# from data.news import News
-# from data.hazard_levels import HazardLevel
-# from data.user_resource import UsersResource, UsersListResource
-# import sqlalchemy
-from flask_restful import Api
 
-# from data.jobs_resource import JobsResource, JobsListResource
+from wtforms.validators import DataRequired
+from data import db_session
+
+from data.users import User
+from flask_restful import Api
 
 app = Flask(__name__)
 api = Api(app)
@@ -80,8 +73,7 @@ def login():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html',
-                               message="Неправильный логин или пароль",
-                               form=form)
+                               message="Неправильный логин или пароль", form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -98,21 +90,13 @@ def register():
     if form.validate_on_submit():
         if form.password.data != form.verificatepassword.data:
             return render_template('register.html', title='Register form',
-                                   form=form,
-                                   message="Пароли не совпадают")
+                                   form=form, message="Пароли не совпадают")
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Register form',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
-        user = User(
-            name=form.name.data,
-            email=form.email.data,
-            surname=form.surname.data,
-            age=form.age.data,
-            speciality=form.speciality.data,
-            address=form.address.data,
-            position=form.position.data)
+                                   form=form, message="Такой пользователь уже есть")
+        user = User(name=form.name.data, email=form.email.data, surname=form.surname.data, age=form.age.data,
+                    speciality=form.speciality.data, address=form.address.data, position=form.position.data)
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
