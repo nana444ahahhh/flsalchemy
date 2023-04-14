@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 id="temp">{{ title }}</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div class="forms">
+        {{ form.email.label }}<br>
+        {{ form.email(class="form-control", type="email") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.password.label }}<br>
+        {{ form.password(class="form-control", type="password") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.verificatepassword.label }}<br>
+        {{ form.verificatepassword(class="form-control", type="password") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.surname.label }}<br>
+        {{ form.surname(class="form-control") }}<br>
+
+    </div>
+    <p class="forms">
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.age.label }}<br>
+        {{ form.age(class="form-control") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.position.label }}<br>
+        {{ form.position(class="form-control") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.speciality.label }}<br>
+        {{ form.speciality(class="form-control") }}<br>
+
+    </div>
+    <div class="forms">
+        {{ form.address.label }}<br>
+        {{ form.address(class="form-control") }}<br>
+
+    </div>
+    <p class="forms">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
+{% endblock %}
