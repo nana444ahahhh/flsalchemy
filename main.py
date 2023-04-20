@@ -3,11 +3,12 @@ import datetime
 
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, BooleanField, SubmitField, EmailField, StringField, IntegerField
+from wtforms import PasswordField, BooleanField, SubmitField, EmailField, StringField, IntegerField, DateTimeField
 
 from wtforms.validators import DataRequired
 from data import db_session
 
+from data.users import User
 from data.users import User
 from flask_restful import Api
 
@@ -19,11 +20,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-blueprint = Blueprint(
-    'news_api',
-    __name__,
-    template_folder='templates'
-)
 
 db_session.global_init("db/blogs.db")
 dbs = db_session.create_session()
@@ -36,6 +32,18 @@ class LoginForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
+
+
+class JobForm(FlaskForm):
+    email = StringField('Почта', validators=[DataRequired()])
+    name = StringField('Назвние', validators=[DataRequired()])
+    about = StringField('Описание', validators=[DataRequired()])
+    size = IntegerField('Объем', validators=[DataRequired()])
+    collaborators = StringField('Участники')
+    start = DateTimeField('Дата начала', format='Дата:%Y-%m-%d Время:%H:%M:%S')
+    end = DateTimeField('Дата конца', format='Дата:%Y-%m-%d Время:%H:%M:%S')
+    finished = BooleanField('Работа завершена?')
+    submit = SubmitField('Submit')
 
 
 class RegisterForm(FlaskForm):
@@ -102,6 +110,14 @@ def register():
         db_sess.commit()
         return redirect('/')
     return render_template('register.html', title='регистрация', form=form)
+
+
+@app.route('/addjob', methods=['GET', 'POST'])
+@login_required
+def addjob():
+    form = JobForm()
+
+    return render_template('addjob.html', form=form, title='Добавление работы')
 
 
 if __name__ == '__main__':

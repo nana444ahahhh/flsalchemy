@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 id="temp">{{ title }}</h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="forms">
+            {{ form.email.label }}<br>
+            {{ form.email(class="form-control") }}<br>
+        </div>
+        <div class="forms">
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control") }}<br>
+        </div>
+        <div class="forms">
+            {{ form.about.label }}<br>
+            {{ form.about(class="form-control") }}<br>
+        </div>
+        <div class="forms">
+            {{ form.size.label }}<br>
+            {{ form.size(class="form-control") }}<br>
+        </div>
+        <div class="forms">
+            {{ form.collaborators.label }}<br>
+            {{ form.collaborators(class="form-control") }}<br>
+        </div>
+        <div class="forms">
+            {{ form.start.label }}<br>
+            {{ form.start(class="form-control") }}<br>
+        </div>
+        <div class="forms">
+            {{ form.end.label }}<br>
+            {{ form.end(class="form-control") }}<br>
+        </div>
+        <p class="forms">{{ form.finished() }} {{ form.finished.label }}</p>
+        <p class="forms">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{ message }}</div>
+    </form>
+{% endblock %}
