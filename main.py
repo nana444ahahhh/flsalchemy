@@ -1,13 +1,13 @@
 from flask import Flask, render_template, redirect, Blueprint
 import datetime
-
+from data import db_session, jobs_api
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, BooleanField, SubmitField, EmailField, StringField, IntegerField, DateTimeField
 
 from wtforms.validators import DataRequired
 from data import db_session
-
+from requests import get
 from data.users import User
 from data.users import User
 from flask_restful import Api
@@ -19,7 +19,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 db_session.global_init("db/blogs.db")
 dbs = db_session.create_session()
@@ -120,5 +119,12 @@ def addjob():
     return render_template('addjob.html', form=form, title='Добавление работы')
 
 
+
+
+
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    db_session.global_init("db/blogs.db")
+    app.register_blueprint(jobs_api.blueprint)
+
+    app.run()
+
